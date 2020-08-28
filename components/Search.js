@@ -12,6 +12,7 @@ import {
 import data from '../helpers/filmsList';
 import Film from './film';
 import { getFilmsFromApiWithSearchedText } from '../api/movies';
+import { connect } from 'react-redux';
 
 class Search extends React.Component {
 	constructor(props) {
@@ -50,7 +51,6 @@ class Search extends React.Component {
 			return (
 				<View style={styles.loading_container}>
 					<ActivityIndicator size='large' />
-					{/* Le component ActivityIndicator possède une propriété size pour définir la taille du visuel de chargement : small ou large. Par défaut size vaut small, on met donc large pour que le chargement soit bien visible */}
 				</View>
 			);
 		}
@@ -80,9 +80,9 @@ class Search extends React.Component {
 						' / Nombre de films : ' +
 						this.state.films.length
 				);
+				this._loadFilms();
 			}
 		);
-		this._loadFilms();
 	}
 
 	_displayDetailForFilm = (idFilm) => {
@@ -103,10 +103,18 @@ class Search extends React.Component {
 				<Button title='Rechercher' onPress={() => this._searchFilms()} />
 				<FlatList
 					data={this.state.films}
+					extraData={this.props.favoritesFilm}
 					keyExtractor={(item) => item.id.toString()}
 					renderItem={({ item }) => (
 						<Film
 							film={item}
+							isFilmFavorite={
+								this.props.favoritesFilm.findIndex(
+									(film) => film.id === item.id
+								) !== -1
+									? true
+									: false
+							}
 							displayDetailForFilm={this._displayDetailForFilm}
 						/>
 					)}
@@ -147,4 +155,10 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default Search;
+const mapStateToProps = (state) => {
+	return {
+		favoritesFilm: state.favoritesFilm,
+	};
+};
+
+export default connect(mapStateToProps)(Search);

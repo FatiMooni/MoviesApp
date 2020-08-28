@@ -3,12 +3,16 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Search from './components/Search';
 import Navigation from './navigations/Navigation';
+import { Provider } from 'react-redux';
+import Store from './Store/configureStore';
 
 export default function App() {
 	return (
-		<View style={styles.container}>
-			<Navigation />
-		</View>
+		<Provider store={Store}>
+			<View style={styles.container}>
+				<Navigation />
+			</View>
+		</Provider>
 	);
 }
 
