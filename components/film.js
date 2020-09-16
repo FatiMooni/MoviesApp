@@ -51,6 +51,10 @@ class Film extends React.Component {
 }
 
 const styles = StyleSheet.create({
+	favorite_image: {
+		width: 25,
+		height: 25,
+	},
 	main_container: {
 		height: 190,
 		flexDirection: 'row',

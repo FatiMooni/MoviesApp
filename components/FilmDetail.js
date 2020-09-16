@@ -20,7 +20,7 @@ class FilmDetail extends React.Component {
 		super(props);
 		this.state = {
 			film: undefined,
-			isLoading: true,
+			isLoading: false,
 		};
 	}
 
@@ -30,7 +30,18 @@ class FilmDetail extends React.Component {
 	}
 
 	componentDidMount() {
-		//when seen is ready => get info
+		const favoriteFilmIndex = this.props.favoritesFilm.findIndex(
+			(item) => item.id === this.props.navigation.state.params.idFilm
+		);
+		if (favoriteFilmIndex !== -1) {
+			this.setState({
+				film: this.props.favoritesFilm[favoriteFilmIndex],
+			});
+			return;
+		}
+		// Le film n'est pas dans nos favoris, on n'a pas son détail
+		// On appelle l'API pour récupérer son détail
+		this.setState({ isLoading: true });
 		getFilmDetailFromApi(this.props.navigation.state.params.idFilm).then(
 			(data) => {
 				this.setState({
@@ -183,15 +194,6 @@ const mapStateToProps = (state) => {
 	return {
 		//return only a portion of store => what we actually need
 		favoritesFilm: state.favoritesFilm,
-	};
-};
-
-//to dispatch the action
-const mapDispatchToProps = (dispatch) => {
-	return {
-		dispatch: (action) => {
-			dispatch(action);
-		},
 	};
 };
 

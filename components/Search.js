@@ -10,9 +10,8 @@ import {
 } from 'react-native';
 //data
 import data from '../helpers/filmsList';
-import Film from './film';
+import FilmList from './FilmList';
 import { getFilmsFromApiWithSearchedText } from '../api/movies';
-import { connect } from 'react-redux';
 
 class Search extends React.Component {
 	constructor(props) {
@@ -28,6 +27,9 @@ class Search extends React.Component {
 			films: [],
 			isLoading: false,
 		};
+		this._loadFilms = this._loadFilms.bind(this);
+		//de cette maniere , à chaque fois on appelle la fonction load
+		//=> on va utiliser le context de Searchh comp
 	}
 
 	_loadFilms() {
@@ -41,6 +43,7 @@ class Search extends React.Component {
 						films: [...this.state.films, ...data.results],
 						isLoading: false,
 					});
+					console.log('enter', this.state.films);
 				}
 			);
 		}
@@ -72,26 +75,20 @@ class Search extends React.Component {
 			() => {
 				// J'utilise la paramètre length sur mon tableau de films pour
 				// vérifier qu'il y a bien 0 film
-				console.log(
+				/*console.log(
 					'Page : ' +
 						this.page +
 						' / TotalPages : ' +
 						this.totalPages +
 						' / Nombre de films : ' +
 						this.state.films.length
-				);
+				);*/
 				this._loadFilms();
 			}
 		);
 	}
 
-	_displayDetailForFilm = (idFilm) => {
-		console.log('Display film with id ' + idFilm);
-		this.props.navigation.navigate('FilmDetail', { idFilm: idFilm });
-	};
-
 	render() {
-		console.log('RENDER');
 		return (
 			<View style={styles.main_container}>
 				<TextInput
@@ -101,29 +98,18 @@ class Search extends React.Component {
 					onSubmitEditing={() => this._searchFilms()}
 				/>
 				<Button title='Rechercher' onPress={() => this._searchFilms()} />
-				<FlatList
-					data={this.state.films}
-					extraData={this.props.favoritesFilm}
-					keyExtractor={(item) => item.id.toString()}
-					renderItem={({ item }) => (
-						<Film
-							film={item}
-							isFilmFavorite={
-								this.props.favoritesFilm.findIndex(
-									(film) => film.id === item.id
-								) !== -1
-									? true
-									: false
-							}
-							displayDetailForFilm={this._displayDetailForFilm}
-						/>
-					)}
-					onEndReachedThreshold={0.5}
-					onEndReached={() => {
-						if (this.page < this.totalPages) {
-							this._loadFilms();
-						}
-					}}
+				<FilmList
+					films={this.state.films}
+					// list of films
+					navigation={this.props.navigation}
+					// navigations infos => to get details
+					loadFilms={this._loadFilms}
+					// to get new list of films
+					page={this.page}
+					totalPages={this.totalPages}
+					//usful when relaoding
+					favoriteList={false}
+					//which compis using the film list
 				/>
 				{this._displayLoading()}
 			</View>
@@ -155,10 +141,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-const mapStateToProps = (state) => {
-	return {
-		favoritesFilm: state.favoritesFilm,
-	};
-};
-
-export default connect(mapStateToProps)(Search);
+export default Search;
