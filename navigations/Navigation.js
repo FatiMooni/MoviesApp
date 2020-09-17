@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import Search from '../components/Search';
 import FilmDetail from '../components/FilmDetail';
 import Favorites from '../components/Favorites';
+import Test from '../components/Test';
 import { Image, StyleSheet } from 'react-native';
 
 const SearchStackNavigator = createStackNavigator({
@@ -38,6 +39,9 @@ const FavStackNavigator = createStackNavigator({
 
 const MoviesTabNavigator = createBottomTabNavigator(
 	{
+		Test: {
+			screen: Test,
+		},
 		Search: {
 			screen: SearchStackNavigator,
 			navigationOptions: {

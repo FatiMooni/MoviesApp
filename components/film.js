@@ -1,12 +1,25 @@
 // Components/FilmItem.js
 
 import React from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
+import {
+	StyleSheet,
+	View,
+	Text,
+	Image,
+	TouchableOpacity,
+	Animated,
+	Dimensions,
+} from 'react-native';
 import { getImageFromApi } from '../api/movies';
+import FadeIn from '../animations/FadeIn';
 
 // ...
 
 class Film extends React.Component {
+	constructor(props) {
+		super(props);
+	}
+
 	_displayFavoriteImage() {
 		if (this.props.isFilmFavorite) {
 			// Si la props isFilmFavorite vaut true, on affiche le 🖤
@@ -20,32 +33,34 @@ class Film extends React.Component {
 	}
 
 	render() {
-		const { film, displayDetailForFilm, isFilmFavorite } = this.props;
+		const { film, displayDetailForFilm } = this.props;
 		return (
-			<TouchableOpacity
-				style={styles.main_container}
-				onPress={() => displayDetailForFilm(film.id)}
-			>
-				<Image
-					style={styles.image}
-					source={{ uri: getImageFromApi(film.poster_path) }}
-				/>
-				<View style={styles.content_container}>
-					<View style={styles.header_container}>
-						{this._displayFavoriteImage()}
-						<Text style={styles.title_text}>{film.title}</Text>
-						<Text style={styles.vote_text}>{film.vote_average}</Text>
+			<FadeIn>
+				<TouchableOpacity
+					style={styles.main_container}
+					onPress={() => displayDetailForFilm(film.id)}
+				>
+					<Image
+						style={styles.image}
+						source={{ uri: getImageFromApi(film.poster_path) }}
+					/>
+					<View style={styles.content_container}>
+						<View style={styles.header_container}>
+							{this._displayFavoriteImage()}
+							<Text style={styles.title_text}>{film.title}</Text>
+							<Text style={styles.vote_text}>{film.vote_average}</Text>
+						</View>
+						<View style={styles.description_container}>
+							<Text style={styles.description_text} numberOfLines={6}>
+								{film.overview}
+							</Text>
+						</View>
+						<View style={styles.date_container}>
+							<Text style={styles.date_text}>Sorti le {film.release_date}</Text>
+						</View>
 					</View>
-					<View style={styles.description_container}>
-						<Text style={styles.description_text} numberOfLines={6}>
-							{film.overview}
-						</Text>
-					</View>
-					<View style={styles.date_container}>
-						<Text style={styles.date_text}>Sorti le {film.release_date}</Text>
-					</View>
-				</View>
-			</TouchableOpacity>
+				</TouchableOpacity>
+			</FadeIn>
 		);
 	}
 }
@@ -54,6 +69,8 @@ const styles = StyleSheet.create({
 	favorite_image: {
 		width: 25,
 		height: 25,
+		marginHorizontal: 1,
+		marginVertical: 2,
 	},
 	main_container: {
 		height: 190,
