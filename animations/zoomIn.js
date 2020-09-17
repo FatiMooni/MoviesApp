@@ -22,6 +22,7 @@ class ZoomInOut extends React.Component {
 	componentDidUpdate() {
 		Animated.spring(this.state.viewSize, {
 			toValue: this._getSize(),
+			useNativeDriver: false,
 		}).start();
 	}
 
