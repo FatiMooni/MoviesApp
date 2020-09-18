@@ -9,7 +9,6 @@ import {
 	ActivityIndicator,
 } from 'react-native';
 //data
-import data from '../helpers/filmsList';
 import FilmList from './FilmList';
 import { getFilmsFromApiWithSearchedText } from '../api/movies';
 
