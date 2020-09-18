@@ -7,6 +7,7 @@ import FilmDetail from '../components/FilmDetail';
 import Favorites from '../components/Favorites';
 import Test from '../components/Test';
 import {Image, StyleSheet} from 'react-native';
+import NewFilms from '../components/NewFilms';
 
 const SearchStackNavigator = createStackNavigator({
   Search: {
@@ -25,7 +26,7 @@ const SearchStackNavigator = createStackNavigator({
 });
 
 const FavStackNavigator = createStackNavigator({
-  Search: {
+  Favorites: {
     screen: Favorites,
     navigationOptions: {
       title: 'Favoris',
@@ -37,8 +38,34 @@ const FavStackNavigator = createStackNavigator({
   },
 });
 
+const NewStackNavigator = createStackNavigator({
+  Films: {
+    screen: NewFilms,
+    navigationOptions: {
+      title: 'Les derniers films',
+    },
+  },
+
+  FilmDetail: {
+    screen: FilmDetail,
+  },
+});
+
 const MoviesTabNavigator = createBottomTabNavigator(
   {
+    NewFilms: {
+      screen: NewStackNavigator,
+      navigationOptions: {
+        tabBarIcon: () => {
+          return (
+            <Image
+              source={require('../Images/ic_fiber_new.png')}
+              style={styles.icon}
+            />
+          );
+        },
+      },
+    },
     Search: {
       screen: SearchStackNavigator,
       navigationOptions: {
