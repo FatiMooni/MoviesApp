@@ -7,6 +7,7 @@ import {
   Text,
   FlatList,
   ActivityIndicator,
+  Image,
 } from 'react-native';
 import {connect} from 'react-redux';
 import Film from './film';
@@ -17,6 +18,24 @@ class FilmList extends React.Component {
     this.state = {
       films: [],
     };
+  }
+
+  _renderEmptyContainer() {
+    return (
+      <View
+        style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: 500,
+        }}>
+        <Image
+          style={{width: 100, height: 100, opacity: 0.7, marginBottom: 7}}
+          source={require('../Images/video-camera.png')}
+        />
+        <Text>Tapez un titre ou un mot clé</Text>
+        <Text>pour trouvez votre film.</Text>
+      </View>
+    );
   }
 
   _displayDetailForFilm = (idFilm) => {
@@ -46,6 +65,7 @@ class FilmList extends React.Component {
             displayDetailForFilm={this._displayDetailForFilm}
           />
         )}
+        ListEmptyComponent={this._renderEmptyContainer()}
         onEndReachedThreshold={0.5}
         onEndReached={() => {
           if (

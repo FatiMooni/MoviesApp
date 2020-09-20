@@ -6,6 +6,7 @@ import {Provider} from 'react-redux';
 import Store from './Store/configureStore';
 
 export default function App() {
+  let x = 1;
   return (
     <Provider store={Store}>
       <View style={styles.container}>

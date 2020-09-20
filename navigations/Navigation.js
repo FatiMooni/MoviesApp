@@ -16,7 +16,7 @@ const SearchStackNavigator = createStackNavigator({
     //C'est le nom qu'on utilisera pour appeler cette vue
     screen: Search,
     navigationOptions: {
-      title: 'Rechercher',
+      title: 'Trouver un film',
     },
   },
 

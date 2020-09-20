@@ -12,7 +12,16 @@ class Favorites extends React.Component {
       <View style={styles.main_container}>
         <View style={styles.avatar_container}>
           <Avatar />
-          <Text style={{fontStyle: 'italic'}}>User Name</Text>
+          <Text style={{fontStyle: 'italic'}}>Abdiche Fatima Zahra</Text>
+          <Text
+            style={{
+              fontWeight: '800',
+              fontSize: 18,
+              marginTop: 10,
+              marginBottom: 10,
+            }}>
+            Mes Films Favoris
+          </Text>
         </View>
         <FilmList
           films={this.props.favoritesFilm}
